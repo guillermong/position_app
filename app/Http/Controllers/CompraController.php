@@ -59,13 +59,15 @@ class CompraController extends Controller
      */
     public function show($id)
     {
-        $compras = Compra::select('fecha','monto')
+        $compras = Compra::groupBy('fecha')
+                    ->selectRaw('fecha, sum(monto) as monto')
                     ->where('user_id', $id)
                     ->orderBy('fecha')
                     ->get();
         return response()->json($compras);
     }
 
+    
     /**
      * Show the form for editing the specified resource.
      *
